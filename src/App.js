@@ -52,7 +52,7 @@ function App() {
       body: JSON.stringify(room)
     })
     .then(res => res.json())
-    .then(data => console.log(data))
+    .then(data => setRooms([...rooms, data]))
   }
 
   return (
@@ -69,7 +69,7 @@ function App() {
             <Route exact path="/rooms" element={<HousesList rooms={rooms} />} />
             <Route exact path="/rooms/:id" element={<SingleHouse />} />
             <Route exact path="/rooms/:id/order" element={<Order />} />
-            <Route exact path="/new-room" element={<AddHouse handleNewRoom={handleNewRoom} />} />
+            <Route exact path="/new-room" element={<AddHouse handleNewRoom={handleNewRoom} user={user} />} />
           <Route exact path="/login" element={<Login isLoggedIn={isLoggedIn} getUserData={getUserData} />} />
           <Route exact path="/register" element={<Register isLoggedIn={isLoggedIn} getUserData={getUserData} />} />
         </Routes>
