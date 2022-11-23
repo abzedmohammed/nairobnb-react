@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import './App.css';
 import Login from './components/auth/Login';
@@ -15,17 +15,18 @@ function App() {
   const [user, setUser] = useState({})
   const [rooms, setRooms] = useState([])
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const navigate = useNavigate();
 
   useEffect(() => {
     const user_id = sessionStorage.getItem('user_id');
-    fetch(`http://localhost:9292/users/${user_id}`)
+    fetch(`https://nairobnb.herokuapp.com/users/${user_id}`)
     .then(res => res.json())
      .then(data => {
       setUser(data)
       setIsLoggedIn(true)
      })
 
-     fetch("http://localhost:9292/bnbs")
+     fetch("https://nairobnb.herokuapp.com/bnbs")
      .then(res => res.json())
      .then(data => setRooms(data))
   }, [])
@@ -39,10 +40,11 @@ function App() {
     sessionStorage.clear();
     setIsLoggedIn(false)
     setUser({})
+    navigate("/login")
   }
 
   function handleNewRoom(room){
-    fetch("http://localhost:9292/bnbs", {
+    fetch("https://nairobnb.herokuapp.com/bnbs", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'

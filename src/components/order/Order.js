@@ -1,38 +1,55 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 
 export default function Order(){
     const [singleRoom, setSingleRoom] = useState({})
-    const [total, setTotal] = useState(singleRoom.price)
-    const [night, setNight] = useState(1)
+    const [booked, setbooked] = useState(false)
+    const [total, setTotal] = useState(0)
+    const [night, setNight] = useState(0)
     const {id} = useParams()
-    console.log(singleRoom.price);
-    console.log(total);
     useEffect(() => {
-        fetch(`http://localhost:9292/bnbs/${id}`)
+        fetch(`https://nairobnb.herokuapp.com/bnbs/${id}`)
         .then(res => res.json())
         .then(data => setSingleRoom(data))
     }, [])
 
-    function handlePayment(e){
-        setNight(e.target.value)
-        const amount = singleRoom.price * night
-        console.log(amount);
-        setTotal(amount)
-    }
-
+    useEffect(() => {
+        setTotal(singleRoom.price * night)
+    }, [night])
+    
     function handleOrder(e){
         e.preventDefault()
-        fetch(`http://localhost:9292/bnbs/${id}`, {
+        singleRoom.booked = true
+        delete singleRoom.id
+        console.log('====================================');
+        console.log(singleRoom);
+        console.log('====================================');
 
+        fetch(`https://nairobnb.herokuapp.com/bnbs/${id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                ...singleRoom
+            })
         })
-        .then(res => res.json)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            setbooked(true)
+        })
     }
 
+    if (booked) {
+        return <Navigate to="/rooms" />
+    }
     return(
         <>
         <div className="checkout-container">
-        <div className="left-side">
+        <div style={{
+            backgroundImage: `url(${singleRoom.bnb_image})`
+        }} className="left-side">
             <div className="text-box">
             <h1 className="home-heading">{singleRoom.name}</h1>
             <p className="home-price"><em>KES. {singleRoom.price} </em>/ 1 night</p>
@@ -47,9 +64,9 @@ export default function Order(){
             <div>
                 <table className="table">
                 <tr>
-                    <td>{singleRoom.price} x <input className="per-night" type="number" 
-                    onChange={(e) => handlePayment(e)} value={night} /> nights</td>
-                    <td className="price">KES. {total}</td>
+                    <td>KES. {singleRoom.price} x <input className="per-night" type="number" 
+                    onChange={e => setNight(e.target.value)} value={night} /> nights</td>
+                    <td className="price">KES. {total ? total : 0}</td>
                 </tr>
                 <tr>
                     <td>Discount</td>
@@ -57,7 +74,7 @@ export default function Order(){
                 </tr>
                 <tr>
                     <td>Subtotal</td>
-                    <td className="price">KES. {total}</td>
+                    <td className="price">KES. {total ? total : 0}</td>
                 </tr>
                 <tr>
                     <td>Tax</td>

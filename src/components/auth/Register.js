@@ -26,7 +26,7 @@ export default function Register({getUserData}){
     function handleUserRegistration(userData){
         delete userData.password_confirmation
         console.log(userData);
-        fetch("http://localhost:9292/users", {
+        fetch("https://nairobnb.herokuapp.com/users", {
         method: "POST",
         headers: {
             'content-type': 'application/json',
@@ -76,10 +76,16 @@ export default function Register({getUserData}){
 
     return(
         <>
-        <div className="container m-5">
+        <div className="register-bg">
             <div className="register-container">
+            
                 <ToastContainer />
                 <div className="main-register">
+                <div className="register-info">
+                <h3 className="register-heading text-left mt-3">Create Account</h3>
+                <p className='text-muted'>Welcome to NairoBNB. Get started
+                today by providing your details.</p>
+                </div>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="">
                             {serverErrors ? <p className='error-message'>Invalid username or password</p> : false}
@@ -168,13 +174,6 @@ export default function Register({getUserData}){
                             <p className="mt-4">Already have an account? <Link className='login-here' to="/login">Login here</Link></p>
                         </div>
                     </form>
-                </div>
-
-                <div className="register-info">
-                    <h3 className="register-heading text-left mt-3">Create Account</h3>
-                    <p className='text-muted'>Welcome to NairoBNB. Get started
-                    today by providing your details.Please ensure that your username
-                    is unique and valid as we will use it for account verification.</p>
                 </div>
             </div>
         </div>

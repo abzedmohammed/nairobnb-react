@@ -17,7 +17,6 @@ const schema = yup
 export default function Login({getUserData}) {
   const [serverErrors, setserverErrors] = useState(false);
   const [hasLoggedIn, sethasLoggedIn] = useState(false);
-  const navigate = useNavigate();
   
   const {
     register,
@@ -29,7 +28,7 @@ export default function Login({getUserData}) {
   const onSubmit = (data) => handleUserLogin(data);
 
   function handleUserLogin(userData){     
-    fetch("http://localhost:9292/login", {
+    fetch("https://nairobnb.herokuapp.com/login", {
         method: "POST",
         headers: {
             'content-type': 'application/json',

@@ -6,7 +6,7 @@ export default function SingleHouse(){
     const [singleRoom, setSingleRoom] = useState({})
     const {id} = useParams()
     useEffect(() => {
-        fetch(`http://localhost:9292/bnbs/${id}`)
+        fetch(`https://nairobnb.herokuapp.com/bnbs/${id}`)
         .then(res => res.json())
         .then(data => setSingleRoom(data))
     }, [])
