@@ -9,13 +9,13 @@ export default function AddHouse({handleNewRoom, user}){
     bnb_type: "",
     price: 0,
     bnb_image: "",
-    "features": "",
-    "bed": 0,
-    "size": 0,
-    "wifi": false,
-    "electronics": false,
-    "booked": false,
-    "user_id": user.id,
+    features: "",
+    bed: 0,
+    size: 0,
+    wifi: false,
+    electronics: false,
+    booked: false,
+    bnb_user_id: user.id,
 })
 
 function handleInput(e){

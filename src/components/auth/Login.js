@@ -28,7 +28,7 @@ export default function Login({getUserData}) {
   const onSubmit = (data) => handleUserLogin(data);
 
   function handleUserLogin(userData){     
-    fetch("https://nairobnb.herokuapp.com/login", {
+    fetch("https://nairobnb-api.onrender.com/login", {
         method: "POST",
         headers: {
             'content-type': 'application/json',

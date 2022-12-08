@@ -50,6 +50,9 @@ export default function MainNav({user, logout}) {
             <li className="nav-item mx-4 mt-3">
             <button onClick={logout} type="button" className="btn nav-link">Logout</button>
             </li>
+            <li className="nav-item mx-4 mt-3">
+              {user.username}
+            </li>
           </ul>
 
           <div className="">
@@ -59,7 +62,7 @@ export default function MainNav({user, logout}) {
               id=""
             >
               <img
-                src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+                src={user.avatar ? user.avatar : "https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"}
                 className="rounded-circle"
                 height="35"
                 alt="Black and White Portrait of a Man"

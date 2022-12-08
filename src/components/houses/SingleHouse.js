@@ -6,7 +6,7 @@ export default function SingleHouse(){
     const [singleRoom, setSingleRoom] = useState({})
     const {id} = useParams()
     useEffect(() => {
-        fetch(`https://nairobnb.herokuapp.com/bnbs/${id}`)
+        fetch(`https://nairobnb-api.onrender.com/bnb_rooms/${id}`)
         .then(res => res.json())
         .then(data => setSingleRoom(data))
     }, [])
@@ -16,7 +16,7 @@ export default function SingleHouse(){
             <Single address={singleRoom.address} image={singleRoom.bnb_image} type={singleRoom.bnb_type} 
             name={singleRoom.name} price={singleRoom.price} posted={singleRoom.created_at} features={singleRoom.features} 
             bed={singleRoom.bed} size={singleRoom.size} wifi={singleRoom.wifi} electronics={singleRoom.electronics} 
-            booked={singleRoom.booked} user={singleRoom.user_id} />
+            booked={singleRoom.booked} user={singleRoom.bnb_user_id} />
         </>
     )
 }

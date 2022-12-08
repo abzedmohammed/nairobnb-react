@@ -19,14 +19,14 @@ function App() {
 
   useEffect(() => {
     const user_id = sessionStorage.getItem('user_id');
-    fetch(`https://nairobnb.herokuapp.com/users/${user_id}`)
+    fetch(`https://nairobnb-api.onrender.com/bnb_users/${user_id}`)
     .then(res => res.json())
      .then(data => {
       setUser(data)
       setIsLoggedIn(true)
      })
 
-     fetch("https://nairobnb.herokuapp.com/bnbs")
+     fetch("https://nairobnb-api.onrender.com/bnb_rooms")
      .then(res => res.json())
      .then(data => setRooms(data))
   }, [])
@@ -44,7 +44,7 @@ function App() {
   }
 
   function handleNewRoom(room){
-    fetch("https://nairobnb.herokuapp.com/bnbs", {
+    fetch("https://nairobnb-api.onrender.com/bnb_rooms", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'

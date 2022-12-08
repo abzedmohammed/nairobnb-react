@@ -26,7 +26,7 @@ export default function Register({getUserData}){
     function handleUserRegistration(userData){
         delete userData.password_confirmation
         console.log(userData);
-        fetch("https://nairobnb.herokuapp.com/users", {
+        fetch("https://nairobnb-api.onrender.com/bnb_users", {
         method: "POST",
         headers: {
             'content-type': 'application/json',

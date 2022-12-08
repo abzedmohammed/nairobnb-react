@@ -8,7 +8,7 @@ export default function Order(){
     const [night, setNight] = useState(0)
     const {id} = useParams()
     useEffect(() => {
-        fetch(`https://nairobnb.herokuapp.com/bnbs/${id}`)
+        fetch(`https://nairobnb-api.onrender.com/bnb_rooms/${id}`)
         .then(res => res.json())
         .then(data => setSingleRoom(data))
     }, [])
@@ -25,7 +25,7 @@ export default function Order(){
         console.log(singleRoom);
         console.log('====================================');
 
-        fetch(`https://nairobnb.herokuapp.com/bnbs/${id}`, {
+        fetch(`https://nairobnb-api.onrender.com/bnb_rooms/${id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
