@@ -65,7 +65,7 @@ export default function MainNav({user, logout}) {
                 src={user.avatar ? user.avatar : "https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"}
                 className="rounded-circle"
                 height="35"
-                alt="Black and White Portrait of a Man"
+                alt="user_photo"
                 loading="lazy"
               />
             </Link>
