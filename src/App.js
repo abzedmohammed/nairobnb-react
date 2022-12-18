@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
 import './App.css';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
@@ -57,7 +56,6 @@ function App() {
 
   return (
     <div className="App">
-      <ToastContainer />
           {
             isLoggedIn ? <MainNav logout={logout} user={user} isLoggedIn={isLoggedIn} /> : false
           }

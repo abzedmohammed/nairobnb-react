@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-// import signupLogo from "../../assets/auth.jpg"
+import { Link, Navigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
-import { ToastContainer, toast } from 'react-toastify';
 
 
 const schema = yup
@@ -17,6 +15,7 @@ const schema = yup
 export default function Login({getUserData}) {
   const [serverErrors, setserverErrors] = useState(false);
   const [hasLoggedIn, sethasLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
   
   const {
     register,
@@ -38,32 +37,13 @@ export default function Login({getUserData}) {
     .then(res => res.json())
     .then(data => {
         if (data.error) {
+          console.log(data);
           sethasLoggedIn(false)
           setserverErrors(true)
-          toast.error(`${data.error}`, {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: false,
-              progress: undefined,
-              theme: "colored",
-          });
         }
         else{
           getUserData(data)
           setserverErrors(false)
-          toast.success(`Welcome back ${data.username}`, {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: false,
-              progress: undefined,
-              theme: "colored",
-          });
           sessionStorage.setItem("user_id", JSON.stringify(data.id))
           sethasLoggedIn(true)
         }
@@ -75,10 +55,10 @@ export default function Login({getUserData}) {
 
   return (
     <div className="auth-container">
-        <ToastContainer />
         <div className="main-login">
+        <h1 className="signIn">Sign In</h1>
           <form className="user" onSubmit={handleSubmit(onSubmit)}>
-            <h1 className="signIn">Sign In</h1>
+            
             {serverErrors ? <p className='error-message'>Invalid username or password</p> : false}
             <div className="userInput">
               <label className="Label">Username</label>
@@ -89,11 +69,8 @@ export default function Login({getUserData}) {
                 type="text"
                 placeholder="eg. john_doe"
               />
-              <p className="error-message">
-                {errors.username?.message}
-              </p>
             </div>
-            <div className="passwordInput">
+            <div className="passwordInput mb-4">
               <div className="Input">
                 <label className="Label">Password</label>
                 <input
@@ -103,9 +80,6 @@ export default function Login({getUserData}) {
                   type="password"
                   placeholder="Password"
                 />
-                <p className="error-message">
-                  {errors.password?.message}
-                </p>
               </div>
             </div>
             <button className="btn" type="submit">
@@ -117,12 +91,12 @@ export default function Login({getUserData}) {
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke-width="1.5"
+                  strokeWidth="1.5"
                   stroke="currentColor"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"
                   />
                 </svg>

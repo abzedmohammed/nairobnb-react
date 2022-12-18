@@ -3,7 +3,6 @@ import { Link, Navigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { ToastContainer, toast } from 'react-toastify';
 
 const schema = yup.object({
     full_name: yup.string().min(4, "Full names be atleast 4 characters long").required(),
@@ -39,35 +38,14 @@ export default function Register({getUserData}){
                 console.log(data);
                 setserverErrors(true)
                 sethasRegistered(false)
-                toast.error(`${data.error}`, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: false,
-                    progress: undefined,
-                    theme: "colored",
-                });
-        }
-        else{
-            sethasRegistered(true)
-            sessionStorage.setItem("user_id", JSON.stringify(data.id))
-            getUserData(data)
-            setserverErrors(false)
-            toast.success(`Registration successfull. Welcome ${data.username} to NairoBNB`, {
-                position: "top-center",
-                autoClose: 7000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: false,
-                progress: undefined,
-                theme: "colored",
-            });
-            
-        }
-      })         
+            }
+            else{
+                sethasRegistered(true)
+                sessionStorage.setItem("user_id", JSON.stringify(data.id))
+                getUserData(data)
+                setserverErrors(false)    
+            }
+        })         
     }
 
     if (hasRegistered) {
@@ -79,7 +57,6 @@ export default function Register({getUserData}){
         <div className="register-bg">
             <div className="register-container">
             
-                <ToastContainer />
                 <div className="main-register">
                 <div className="register-info">
                 <h3 className="register-heading text-left mt-3">Create Account</h3>
@@ -171,7 +148,7 @@ export default function Register({getUserData}){
                                     </button>
                                 </div>
 
-                            <p className="mt-4">Already have an account? <Link className='login-here' to="/login">Login here</Link></p>
+                            <p className="mt-2">Already have an account? <Link className='login-here' to="/login">Login here</Link></p>
                         </div>
                     </form>
                 </div>
