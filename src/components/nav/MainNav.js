@@ -1,7 +1,14 @@
 import { Link, NavLink } from "react-router-dom";
 import logo from "../../assets/bnb_logo_black.svg"
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../features/user/userSlice";
 
-export default function MainNav({user, logout}) {
+export default function MainNav() {
+  const user = useSelector(state => state.user.user)
+  const dispatch = useDispatch()
+  const logoutUser = () => {
+    return dispatch(logout())
+  }
     return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
@@ -48,7 +55,7 @@ export default function MainNav({user, logout}) {
         <div className="d-flex align-items-center">
           <ul className="navbar-nav mb-2 mb-lg-0">
             <li className="nav-item mx-4 mt-3">
-            <button onClick={logout} type="button" className="btn nav-link">Logout</button>
+            <button onClick={logoutUser} type="button" className="btn nav-link">Logout</button>
             </li>
             <li className="nav-item mx-4 mt-3">
               {user.username}

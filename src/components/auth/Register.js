@@ -16,15 +16,17 @@ const schema = yup.object({
 
 export default function Register({getUserData}){
     const [serverErrors, setserverErrors] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const [hasRegistered, sethasRegistered] = useState(false)
+
     const { register, handleSubmit, formState:{ errors } } = useForm({
         resolver: yupResolver(schema)
       });
     const onSubmit = (data) => handleUserRegistration(data);
 
     function handleUserRegistration(userData){
+        setIsLoading(true)
         delete userData.password_confirmation
-        console.log(userData);
         fetch("https://nairobnb-api.onrender.com/bnb_users", {
         method: "POST",
         headers: {
@@ -35,11 +37,12 @@ export default function Register({getUserData}){
         .then(res => res.json())
         .then(data => {
             if (data.error) {
-                console.log(data);
+                setIsLoading(false);
                 setserverErrors(true)
                 sethasRegistered(false)
             }
             else{
+                setIsLoading(false);
                 sethasRegistered(true)
                 sessionStorage.setItem("user_id", JSON.stringify(data.id))
                 getUserData(data)
@@ -71,14 +74,14 @@ export default function Register({getUserData}){
                                     <label htmlFor="full_name">Full Name</label>
                                     <input id='full_name' {...register("full_name")} className="form-control " 
                                     type="text" placeholder="eg. john" />
-                                    <p className='error-message'>{errors.full_name?.message}</p>
+                                    {errors.full_name ? <p className='error-message'>{errors.full_name?.message}</p> : false}
                                 </div>
 
                                 <div className="mb-2">
                                     <label htmlFor="email" className='input-left'>Email</label>
                                     <input id='email' {...register("email")} className="form-control  input-left" 
                                     type="email" placeholder="eg. john.doe@mail.com" />
-                                    <p className='error-message input-left'>{errors.email?.message}</p>
+                                    {errors.email ? <p className='error-message input-left'>{errors.email?.message}</p> : false}
                                 </div>
 
                             </div>
@@ -88,14 +91,14 @@ export default function Register({getUserData}){
                                     <label htmlFor="username">Username</label>
                                     <input id='username' {...register("username")} className="form-control " 
                                     type="text" placeholder="eg. john_doe" />
-                                    <p className='error-message'>{errors.username?.message}</p>
+                                    {errors.username ? <p className='error-message'>{errors.username?.message}</p> : false}
                                 </div>
 
                                 <div className="mb-2">
                                     <label htmlFor="avatar" className='input-left'>Profile Image URL</label>
                                     <input id='avatar' {...register("avatar")} className="form-control  input-left" 
                                     type="url" placeholder="eg. john.doe@mail.com" />
-                                    <p className='error-message input-left'>{errors.avatar?.message}</p>
+                                    {errors.avatar ? <p className='error-message input-left'>{errors.avatar?.message}</p> : false}
                                 </div>
                                 
                                 
@@ -106,14 +109,14 @@ export default function Register({getUserData}){
                                     <label htmlFor="password">Password</label>
                                     <input id='password' {...register("password")} className="form-control " 
                                     type="password" placeholder="Password" />
-                                    <p className='error-message'>{errors.password?.message}</p>
+                                    {errors.password ? <p className='error-message'>{errors.password?.message}</p> : false}
                                 </div>
 
                                 <div className='h-100 mb-3'>
                                     <label htmlFor="password_confirmation" className='input-left'>Confirm Password</label>
                                     <input id='password_confirmation' {...register("password_confirmation")} className="form-control  input-left" 
                                     type="password" placeholder="Confirm your password" />
-                                    <p className='error-message input-left'>{errors.password_confirmation?.message}</p>
+                                    {errors.password_confirmation ? <p className='error-message input-left'>{errors.password_confirmation?.message}</p> : false}
                                 </div>
                             </div>
 
@@ -124,27 +127,41 @@ export default function Register({getUserData}){
                                         <option value="Guest">Guest</option>
                                         <option value="Host">Host</option>
                                     </select>
-                                    <p className='error-message'>{errors.account_type?.message}</p>
+                                    {errors.account_type ? <p className='error-message'>{errors.account_type?.message}</p> : false}
                                 </div>
                                 <button className="btn" type="submit">
-                                    Register {" "}
+                                {
+                                    isLoading ? 
+                                    <div className="d-flex flex-row align-items-center justify-content-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" style={{margin: "auto", background: "none", display: "block", shapeRendering: "auto", animationPlayState: "running", animationDelay: "0s"}} width="25px" height="25px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                                    <circle cx="50" cy="50" fill="none" stroke="#3b88fc" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138" style={{animationPlayState: "running", animationDelay: "0s"}}>
+                                    <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1" style={{animationPlayState: "running", animationDelay: "0s"}}></animateTransform>
+                                    </circle>
+                                    </svg> 
+                                    <span style={{textTransform: "capitalize"}}> Creating account...</span>
+                                    </div>
+                                    :
+                                    <>
+                                    Register{" "}
                                     <span className="svg">
-                                        <svg
-                                        width="16"
-                                        height="16"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke-width="1.5"
-                                        stroke="currentColor"
-                                        >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"
-                                        />
+                                    <svg
+                                    width="16"
+                                    height="16"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="1.5"
+                                    stroke="currentColor"
+                                    >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"
+                                    />
                                         </svg>
                                     </span>
+                                    </>
+                                }
                                     </button>
                                 </div>
 

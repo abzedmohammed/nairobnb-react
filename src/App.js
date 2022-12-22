@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import './App.css';
 import Login from './components/auth/Login';
@@ -9,68 +9,64 @@ import HousesList from './components/houses/HousesList';
 import SingleHouse from './components/houses/SingleHouse';
 import MainNav from './components/nav/MainNav';
 import Order from './components/order/Order';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchLoggedInUser } from './features/user/userSlice';
 
 function App() {
-  const [user, setUser] = useState({})
-  const [rooms, setRooms] = useState([])
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const navigate = useNavigate();
+
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn)
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.user.user)
+  const loading = useSelector(state => state.user.getUser.loading)
 
   useEffect(() => {
     const user_id = sessionStorage.getItem('user_id');
-    fetch(`https://nairobnb-api.onrender.com/bnb_users/${user_id}`)
-    .then(res => res.json())
-     .then(data => {
-      setUser(data)
-      setIsLoggedIn(true)
-     })
-
-     fetch("https://nairobnb-api.onrender.com/bnb_rooms")
-     .then(res => res.json())
-     .then(data => setRooms(data))
+    dispatch(fetchLoggedInUser(user_id));
   }, [])
 
-  function getUserData(profile){
-    setIsLoggedIn(true)
-    setUser(profile)
-  }
+  let loginRoutes = (
+    <Routes>
+      <Route exact path="/login" element={<Login />} />
+      <Route exact path="/register" element={<Register />} />
+      <Route path='*' replace element={<Navigate to="/login" />}/>
+    </Routes>
+  )
 
-  function logout(){
-    sessionStorage.clear();
-    setIsLoggedIn(false)
-    setUser({})
-    navigate("/login")
-  }
-
-  function handleNewRoom(room){
-    fetch("https://nairobnb-api.onrender.com/bnb_rooms", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(room)
-    })
-    .then(res => res.json())
-    .then(data => setRooms([...rooms, data]))
-  }
-
+  let routes = (
+    <>
+      <MainNav />
+      {
+        loading ? 
+          <div className='loading'>
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" style={{margin: "auto", background: "none", display: "block", shapeRendering: "auto", animationPlayState: "running", animationDelay: "0s"}} width="55px" height="55px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                <circle cx="50" cy="50" fill="none" stroke="#3b88fc" strokeWidth="10" r="35" strokeDasharray="164.93361431346415 56.97787143782138" style={{animationPlayState: "running", animationDelay: "0s"}}>
+                <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1" style={{animationPlayState: "running", animationDelay: "0s"}}></animateTransform>
+                </circle>
+                </svg> 
+            </div>
+            Loading...
+          </div>
+        :
+        <Routes>
+          <Route path="*" element={<Navigate to="/home" /> } />
+          <Route exact path="/home" element={<Home />} />
+          <Route exact path="/rooms" element={<HousesList />} />
+          <Route exact path="/rooms/:id" element={<SingleHouse />} />
+          <Route exact path="/rooms/:id/order" element={<Order />} />
+          <Route exact path="/new-room" element={<AddHouse user={user} />} />
+      </Routes>
+      }
+    </>
+  )
   return (
     <div className="App">
-          {
-            isLoggedIn ? <MainNav logout={logout} user={user} isLoggedIn={isLoggedIn} /> : false
-          }
-          <Routes>
-            <Route path="*" element={
-              !isLoggedIn ? <Navigate to="/login" /> : <Navigate to="/home" /> 
-            } />
-            <Route exact path="/home" element={<Home user={user} />} />
-            <Route exact path="/rooms" element={<HousesList rooms={rooms} />} />
-            <Route exact path="/rooms/:id" element={<SingleHouse />} />
-            <Route exact path="/rooms/:id/order" element={<Order />} />
-            <Route exact path="/new-room" element={<AddHouse handleNewRoom={handleNewRoom} user={user} />} />
-          <Route exact path="/login" element={<Login isLoggedIn={isLoggedIn} getUserData={getUserData} />} />
-          <Route exact path="/register" element={<Register isLoggedIn={isLoggedIn} getUserData={getUserData} />} />
-        </Routes>
+      {
+        isLoggedIn && !user.error ? 
+        routes
+        :
+        loginRoutes
+      }
     </div>
   );
 }

@@ -3,6 +3,8 @@ import { Link, Navigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { signInUser } from "../../features/user/userSlice";
 
 
 const schema = yup
@@ -12,54 +14,30 @@ const schema = yup
   })
   .required();
 
-export default function Login({getUserData}) {
-  const [serverErrors, setserverErrors] = useState(false);
-  const [hasLoggedIn, sethasLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(false)
-  
+export default function Login() {
+  const dispatch = useDispatch()
+  const error = useSelector(state => state.user.loginUser.error)
+  const isLoading = useSelector(state => state.user.loginUser.loading)
   const {
     register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+    handleSubmit
+    } = useForm({
     resolver: yupResolver(schema),
   });
   const onSubmit = (data) => handleUserLogin(data);
 
-  function handleUserLogin(userData){     
-    fetch("https://nairobnb-api.onrender.com/login", {
-        method: "POST",
-        headers: {
-            'content-type': 'application/json',
-        },
-        body: JSON.stringify(userData)
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.error) {
-          console.log(data);
-          sethasLoggedIn(false)
-          setserverErrors(true)
-        }
-        else{
-          getUserData(data)
-          setserverErrors(false)
-          sessionStorage.setItem("user_id", JSON.stringify(data.id))
-          sethasLoggedIn(true)
-        }
-      })    
-    }
-  if (hasLoggedIn) {
-    return <Navigate to="/home" />
-  }  
+  function handleUserLogin(userData){  
+    dispatch(signInUser(userData))
+  }
 
   return (
     <div className="auth-container">
+      <div id="overlay"></div>
         <div className="main-login">
         <h1 className="signIn">Sign In</h1>
           <form className="user" onSubmit={handleSubmit(onSubmit)}>
             
-            {serverErrors ? <p className='error-message'>Invalid username or password</p> : false}
+          {!isLoading && error ? <p className='error-message'>Invalid username or password</p> : null}
             <div className="userInput">
               <label className="Label">Username</label>
               <input
@@ -83,8 +61,20 @@ export default function Login({getUserData}) {
               </div>
             </div>
             <button className="btn" type="submit">
-              Sign In{" "}
-              <span className="svg">
+              {
+                isLoading ? 
+                <div className="d-flex flex-row align-items-center justify-content-center">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" style={{margin: "auto", background: "none", display: "block", shapeRendering: "auto", animationPlayState: "running", animationDelay: "0s"}} width="25px" height="25px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                <circle cx="50" cy="50" fill="none" stroke="#3b88fc" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138" style={{animationPlayState: "running", animationDelay: "0s"}}>
+                  <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1" style={{animationPlayState: "running", animationDelay: "0s"}}></animateTransform>
+                </circle>
+                </svg> 
+                <span style={{textTransform: "capitalize"}}> Signing in...</span>
+                </div>
+                :
+                <>
+                  Sign In{" "}
+                  <span className="svg">
                 <svg
                   width="16"
                   height="16"
@@ -101,6 +91,8 @@ export default function Login({getUserData}) {
                   />
                 </svg>
               </span>
+                </>
+              }
             </button>
             <div className="linkDetails">
               <div className="loginContainer">

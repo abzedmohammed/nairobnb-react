@@ -1,7 +1,7 @@
 import { useState } from "react"
 import {useNavigate} from 'react-router-dom';
 
-export default function AddHouse({handleNewRoom, user}){
+export default function AddHouse({user}){
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
@@ -30,8 +30,17 @@ function handleInput(e){
 
 function handleSubmit(e){
   e.preventDefault()
-  handleNewRoom(formData)
-  navigate("/rooms")
+  fetch("https://nairobnb-api.onrender.com/bnb_rooms", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(res => res.json())
+    .then(data => console.log(data))
+    window.location.reload();
+    navigate("/rooms")
  
  }
     return(

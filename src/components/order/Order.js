@@ -1,17 +1,13 @@
 import { useState, useEffect } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
 export default function Order(){
-    const [singleRoom, setSingleRoom] = useState({})
     const [booked, setbooked] = useState(false)
     const [total, setTotal] = useState(0)
     const [night, setNight] = useState(0)
     const {id} = useParams()
-    useEffect(() => {
-        fetch(`https://nairobnb-api.onrender.com/bnb_rooms/${id}`)
-        .then(res => res.json())
-        .then(data => setSingleRoom(data))
-    }, [])
+    const singleRoom = useSelector(state => state.bnbs.singleBnb)
 
     useEffect(() => {
         setTotal(singleRoom.price * night)

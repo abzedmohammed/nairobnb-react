@@ -1,14 +1,18 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Single from "./Single";
+import { fetchBnbById} from "../../features/bnbs/bnbSlice"
+import { useDispatch, useSelector } from 'react-redux';
+
 
 export default function SingleHouse(){
-    const [singleRoom, setSingleRoom] = useState({})
     const {id} = useParams()
+    const singleRoom = useSelector(state => state.bnbs.singleBnb)
+    console.log(singleRoom);
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        fetch(`https://nairobnb-api.onrender.com/bnb_rooms/${id}`)
-        .then(res => res.json())
-        .then(data => setSingleRoom(data))
+        dispatch(fetchBnbById(id))
     }, [])
     
     return(
