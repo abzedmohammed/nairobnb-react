@@ -14,7 +14,8 @@ const initialState = {
     },
     registerUser: {
         loading: false,
-        error: ""
+        error: "",
+        registerSuccess: false,
     }    
 }
 
@@ -25,6 +26,11 @@ export const fetchLoggedInUser = createAsyncThunk("user/fetchUser", (user_id) =>
 
 export const signInUser = createAsyncThunk('user/signInUser', (userData) => {
     return axios.post('https://nairobnb-api.onrender.com/login', userData)
+    .then((response) => response.data)
+})
+
+export const registerUser = createAsyncThunk('user/registerUser', (userData) => {
+    return axios.post('https://nairobnb-api.onrender.com/bnb_users', userData)
     .then((response) => response.data)
 })
 
@@ -66,6 +72,7 @@ const userSlice = createSlice({
             state.isLoggedIn = true
             state.loginUser.error = ""
             state.user = action.payload
+            state.registerUser.registerSuccess = false
             sessionStorage.setItem("user_id", JSON.stringify(action.payload.id))
         })
 
@@ -74,6 +81,22 @@ const userSlice = createSlice({
             state.isLoggedIn = false
             state.loginUser.error = action.error.message
             state.user = {}
+        })
+
+        builder.addCase(registerUser.pending, state => {
+            state.registerUser.loading = true
+        })
+
+        builder.addCase(registerUser.fulfilled, (state) => {
+            state.registerUser.loading = false
+            state.registerUser.registerSuccess = true
+            state.registerUser.error = ""            
+        })
+
+        builder.addCase(registerUser.rejected, (state, action) => {
+            state.registerUser.loading = false
+            state.registerUser.registerSuccess = false
+            state.registerUser.error = action.error.message
         })
 
 

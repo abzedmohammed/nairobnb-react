@@ -14,6 +14,11 @@ export const fetchBnbs = createAsyncThunk('bnbs/fetchBnbs', () => {
     .then(res => res.data)
 })
 
+export const addBnb = createAsyncThunk('bnbs/addBnb', (data) => {
+    return axios.post("https://nairobnb-api.onrender.com/bnb_rooms", data)
+    .then(res => res.data)
+})
+
 export const fetchBnbById = createAsyncThunk('bnbs/fetchBnbById', id => {
     return axios.get(`https://nairobnb-api.onrender.com/bnb_rooms/${id}`)
     .then(res => res.data)
@@ -42,6 +47,23 @@ const bnbSlice = createSlice({
     builder.addCase(fetchBnbById.fulfilled, (state, action) => {
         state.singleBnb = action.payload
     })
+
+    builder.addCase(addBnb.pending, (state) => {
+        state.loading = true
+    })
+
+    builder.addCase(addBnb.fulfilled, (state, action) => {
+        state.loading = false
+        state.bnbs.push(action.payload)
+        state.error = ''
+    })
+
+    builder.addCase(addBnb.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.error.message
+    })
+
+
   }
 })
 

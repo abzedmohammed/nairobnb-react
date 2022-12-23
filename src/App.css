@@ -29,6 +29,16 @@ body {
   box-shadow: 2px 2px 0px 0px solid red;
 }
 
+.success-message{
+  font-size: 16px;
+  color: green;
+  padding: 10px;
+  border: 1px solid #5cb85c;
+  border-radius: 3px;
+  box-shadow: 2px 2px 0px 0px solid rgb(33, 165, 33);
+  font-weight: 700;
+}
+
 #overlay {
   position: fixed;
   display: none;

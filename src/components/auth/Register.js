@@ -3,6 +3,8 @@ import { Link, Navigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser, signInUser } from '../../features/user/userSlice';
 
 const schema = yup.object({
     full_name: yup.string().min(4, "Full names be atleast 4 characters long").required(),
@@ -15,45 +17,24 @@ const schema = yup.object({
   }).required();
 
 export default function Register({getUserData}){
-    const [serverErrors, setserverErrors] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
-    const [hasRegistered, sethasRegistered] = useState(false)
+    const dispatch = useDispatch()
+    const error = useSelector(state => state.user.registerUser.error)
+    const isLoading = useSelector(state => state.user.registerUser.loading)
+    const registerSuccess = useSelector(state => state.user.registerUser.registerSuccess)
 
     const { register, handleSubmit, formState:{ errors } } = useForm({
         resolver: yupResolver(schema)
       });
     const onSubmit = (data) => handleUserRegistration(data);
 
-    function handleUserRegistration(userData){
-        setIsLoading(true)
-        delete userData.password_confirmation
-        fetch("https://nairobnb-api.onrender.com/bnb_users", {
-        method: "POST",
-        headers: {
-            'content-type': 'application/json',
-        },
-        body: JSON.stringify(userData)
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.error) {
-                setIsLoading(false);
-                setserverErrors(true)
-                sethasRegistered(false)
-            }
-            else{
-                setIsLoading(false);
-                sethasRegistered(true)
-                sessionStorage.setItem("user_id", JSON.stringify(data.id))
-                getUserData(data)
-                setserverErrors(false)    
-            }
-        })         
+    async function handleUserRegistration(userData){
+        delete userData.password_confirmation 
+        await dispatch(registerUser(userData))
+        dispatch(signInUser({
+            username: userData.username,
+            password: userData.password
+        }))        
     }
-
-    if (hasRegistered) {
-        return <Navigate to="/home" />
-      } 
 
     return(
         <>
@@ -66,9 +47,25 @@ export default function Register({getUserData}){
                 <p className='text-muted'>Welcome to NairoBNB. Get started
                 today by providing your details.</p>
                 </div>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="">
-                            {serverErrors ? <p className='error-message'>Invalid username or password</p> : false}
+                    
+                        
+                        {!isLoading && error ? <p className='error-message'>Error: Username or email already in use. Please try a different one</p> : null}
+                        {!isLoading && !error && registerSuccess ? 
+                        <div className="d-flex flex-column-reverse align-items-center justify-content-center mt-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" style={{margin: "auto", background: "none", display: "block", shapeRendering: "auto", animationPlayState: "running", animationDelay: "0s"}} width="55px" height="55px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                            <circle cx="50" cy="50" fill="none" stroke="#5cb85c" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138" style={{animationPlayState: "running", animationDelay: "0s"}}>
+                            <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1" style={{animationPlayState: "running", animationDelay: "0s"}}></animateTransform>
+                            </circle>
+                            </svg> 
+                            <p className='success-message'>Your account has been successfully created. Please wait while we sign you in...</p>
+                        </div>
+                         : null}
+                         {
+                            registerSuccess ?
+                            null
+                            :
+                         <form onSubmit={handleSubmit(onSubmit)}>
+                            <div className="">
                             <div className="input-group">
                                 <div className="mb-2">
                                     <label htmlFor="full_name">Full Name</label>
@@ -168,6 +165,7 @@ export default function Register({getUserData}){
                             <p className="mt-2">Already have an account? <Link className='login-here' to="/login">Login here</Link></p>
                         </div>
                     </form>
+}
                 </div>
             </div>
         </div>
