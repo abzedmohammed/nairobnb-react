@@ -12,8 +12,6 @@ export default function Hero(){
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "100% 100%"
             }} className="itemDisplayImg">     
-            <div className="itemDisplayHeart">
-            </div>
         </div>
     
         <div className="itemDisplayDetailLines">

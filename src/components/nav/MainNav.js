@@ -57,9 +57,6 @@ export default function MainNav() {
             <li className="nav-item mx-4 mt-3">
             <button onClick={logoutUser} type="button" className="btn nav-link">Logout</button>
             </li>
-            <li className="nav-item mx-4 mt-3">
-              {user.username}
-            </li>
           </ul>
 
           <div className="">
