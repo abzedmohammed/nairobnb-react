@@ -78,12 +78,11 @@ body {
 }
 
 .main-register{
-  width: 55%;
+  width: fit-content;
   height: fit-content;
-  border: 1px solid rgb(24, 24, 24);
-  border-radius: 10px;
-  padding: 20px;
-  background-color: #d9d9d9;
+  margin: 70px;
+  border: 2px solid rgb(24, 24, 24);
+  padding: 10px 150px;
 }
 
 .register-info{
@@ -91,39 +90,110 @@ body {
   height: fit-content;
   padding: 20px;
   border: 3px dotted rgb(24, 24, 24);
-  background-color: #d9d9d9;
+  margin-top: 50px;
 }
 
 .register-bg{
-  width: 100%;
-  height: 100vh;
-  background-image: url("./assets/auth.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: #d9d9d9;
-  background-blend-mode: darken;
+  display: flex;
+  flex-direction: row;
+  background: #d9d9d9;
 }
 
-.register-container{
+.right-register-image{
+  width: 600px;
+  height: 100vh;
+  background-color: #fff;
+  overflow-y: hidden;
+}
+
+.right-register-image img {
   width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
+  height: 450px;
+  object-fit: fill;
 }
 
 .input-group{
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  /* justify-content: center; */
   align-items: center;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 .input-group input{
-  width: 350px;
+  width: 450px;
+}
+
+.input-div{
+  padding: 5px;
+}
+
+.register-submit{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+@media only screen and (max-width: 768px) {
+  .main-login{
+    width: 94%;
+    background: hsl(0, 0%, 85%, 79%);
+  }
+  .recover{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 20px 0px;
+  }
+  .register-bg{
+    width: auto;
+    display: flex;
+    background-image: url("https://cdn4.buschsystems.com/blog/wp-content/uploads/sites/4/2020/04/BlogImage_Hotel1.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+  }
+
+  .right-register-image{
+    display: none;
+  }
+
+  .register-info{
+    width: auto;
+    text-align: center;
+    height: fit-content;
+    padding: 20px 100px;
+    border: none;
+    margin-top: 20px;
+  }
+
+  .input-group input{
+    width: 90vw;
+    height: 40px;
+  }
+
+
+  .main-register{
+    width: 100vw;
+    height: fit-content;
+    margin: auto 0px;
+    border: 2px solid rgb(24, 24, 24);
+    padding: 10px;
+    background: hsl(0, 0%, 85%, 79%);
+  }
+
+  .register-submit{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  #register-image {
+    display: none;
+  }
 }
 
 
@@ -675,9 +745,11 @@ hr {
 }
 
 .btn {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
   background-color: #4c616b;
   border: none;
-  border-radius: 8px;
+  border-radius: 8px !important;
   color: #eff2f3;
   font-size: 0.8rem;
   font-weight: 700;

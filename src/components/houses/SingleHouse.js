@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 export default function SingleHouse(){
     const {id} = useParams()
     const singleRoom = useSelector(state => state.bnbs.singleBnb)
-    console.log(singleRoom);
     const dispatch = useDispatch();
 
     useEffect(() => {
