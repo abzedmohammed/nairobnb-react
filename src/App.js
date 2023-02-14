@@ -1,39 +1,32 @@
-import { useEffect } from 'react';
-import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
-import './App.css';
-import Login from './components/auth/Login';
-import Register from './components/auth/Register';
-import Home from './components/home/Home';
-import AddHouse from './components/houses/AddHouse';
-import HousesList from './components/houses/HousesList';
-import SingleHouse from './components/houses/SingleHouse';
+import { useEffect, useState } from 'react';
 import MainNav from './components/nav/MainNav';
-import Order from './components/order/Order';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchLoggedInUser } from './features/user/userSlice';
+import ApplicationRoutes from './routes';
 
 function App() {
-
-  const isLoggedIn = useSelector(state => state.user.isLoggedIn)
   const dispatch = useDispatch()
-  const user = useSelector(state => state.user.user)
+  const [loadingMessage, setloadingMessage] = useState('Getteing server up and running. Please wait...')
   const loading = useSelector(state => state.user.getUser.loading)
 
   useEffect(() => {
     const user_id = sessionStorage.getItem('user_id');
     dispatch(fetchLoggedInUser(user_id));
+    setTimeout(() => {
+      setloadingMessage("Wait. We are building amazing hotels hotels...")
+    }, 4000);
+
+    setTimeout(() => {
+      setloadingMessage("Applying cuteness to the rooms...")
+    }, 8000);
+
+    setTimeout(() => {
+      setloadingMessage("Almost there ...")
+    }, 12000);
   }, [])
 
-  let loginRoutes = (
-    <Routes>
-      <Route exact path="/login" element={<Login />} />
-      <Route exact path="/register" element={<Register />} />
-      <Route path='*' replace element={<Navigate to="/login" />}/>
-    </Routes>
-  )
-
-  let routes = (
-    <>
+  return (
+    <div className="App">
       <MainNav />
       {
         loading ? 
@@ -45,27 +38,10 @@ function App() {
                 </circle>
                 </svg> 
             </div>
-            Loading...
+            {loadingMessage}
           </div>
         :
-        <Routes>
-          <Route path="*" element={<Navigate to="/home" /> } />
-          <Route exact path="/home" element={<Home />} />
-          <Route exact path="/rooms" element={<HousesList />} />
-          <Route exact path="/rooms/:id" element={<SingleHouse />} />
-          <Route exact path="/rooms/:id/order" element={<Order />} />
-          <Route exact path="/new-room" element={<AddHouse user={user} />} />
-      </Routes>
-      }
-    </>
-  )
-  return (
-    <div className="App">
-      {
-        isLoggedIn && !user.error ? 
-        routes
-        :
-        loginRoutes
+        <ApplicationRoutes /> 
       }
     </div>
   );

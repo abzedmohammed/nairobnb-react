@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../features/user/userSlice";
 
 export default function MainNav() {
-  const user = useSelector(state => state.user.user)
+  const user = useSelector(state => state.user)
   const dispatch = useDispatch()
   const logoutUser = () => {
     return dispatch(logout())
@@ -41,16 +41,19 @@ export default function MainNav() {
               <NavLink className="nav-link" to="/rooms">Rooms</NavLink>
             </li>
 
-            {
-              user.account_type === "Host" ?
+            {/* {
+              user.user.account_type === "Host" ?
               <li className="nav-item">
                 <NavLink className="nav-link" to="/new-room">Add Room</NavLink>
               </li>
             :
               false
-            }
+            } */}
           </ul>
         </div>
+
+        {
+          user.isLoggedIn ?
 
         <div className="d-flex align-items-center">
           <ul className="navbar-nav mb-2 mb-lg-0">
@@ -59,22 +62,40 @@ export default function MainNav() {
             </li>
           </ul>
 
-          <div className="">
+          
+            <div className="">
             <Link
               className="d-flex align-items-center hidden-arrow"
               to="#to"
               id=""
             >
               <img
-                src={user.avatar ? user.avatar : "https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"}
+                src={user.user.avatar ? user.user.avatar : "https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"}
                 className="rounded-circle"
-                height="35"
+                height="45" 
+                width="45"
                 alt="user_photo"
                 loading="lazy"
               />
             </Link>
           </div>
         </div>
+
+        :  
+
+        <div className="d-flex align-items-center">
+          <ul className="navbar-nav mb-2 mb-lg-0">
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/login">Login</NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/register">Register</NavLink>
+            </li>
+          </ul>
+
+        </div>
+
+        }
       </div>
     </nav>
     );

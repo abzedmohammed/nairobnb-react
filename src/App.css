@@ -84,9 +84,10 @@ nav{
 .main-register{
   width: fit-content;
   height: fit-content;
-  margin: 70px;
+  background-color: #e3dfdf98;
   border: 2px solid rgb(24, 24, 24);
   padding: 10px 150px;
+  margin-top: -60px;
 }
 
 .register-info{
@@ -386,6 +387,13 @@ nav{
   background-color: #d9d9d9;
 }
 
+@media screen and (max-width: 600px) {
+  .itemDisplayDetailLines{
+    background-color: #d9d9d9af;
+    color: #000;
+  }
+}
+
 .itemDisplayDetailLines div {
   white-space: wrap;
   /* overflow: hidden !important; */
@@ -457,17 +465,16 @@ nav{
   width: 90%;
   padding: 10px;
   margin: 0 auto;
-  background: white;
   border-radius: 10px;
-  box-shadow: 0 4px 8px 0 rgba(3, 6, 31, 0.15);
+  text-align: left;
 }
 .cards .card__details h3 {
   font-size: 22px;
-  font-weight: 400;
+  font-weight: 700;
 }
 .cards .card__details .address {
   color: #777777;
-  font-size: 12px;
+  font-size: 14px;
 }
 .cards .card__details .price {
   display: grid;

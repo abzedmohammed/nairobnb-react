@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from 'react-redux';
-import Footer from '../nav/Footer';
 import Houses from './Houses';
 import { useEffect } from 'react';
 import { fetchBnbs } from '../../features/bnbs/bnbSlice';
@@ -46,7 +45,6 @@ export default function HousesList() {
 				</div>
                 ) : null}
 			</div>
-			<Footer />
 		</>
 	);
 }

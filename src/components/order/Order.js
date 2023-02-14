@@ -13,29 +13,30 @@ export default function Order(){
         setTotal(singleRoom.price * night)
     }, [night])
     
-    function handleOrder(e){
-        e.preventDefault()
-        singleRoom.booked = true
-        delete singleRoom.id
-        console.log('====================================');
-        console.log(singleRoom);
-        console.log('====================================');
+    // function handleOrder(e){
+        
+    //     e.preventDefault()
+    //     singleRoom.booked = true
+    //     delete singleRoom.id
+    //     console.log('====================================');
+    //     console.log(singleRoom);
+    //     console.log('====================================');
 
-        fetch(`https://nairobnb-api.onrender.com/bnb_rooms/${id}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                ...singleRoom
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            console.log(data);
-            setbooked(true)
-        })
-    }
+    //     fetch(`https://nairobnb-api.onrender.com/bnb_rooms/${id}`, {
+    //         method: "PATCH",
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         },
+    //         body: JSON.stringify({
+    //             ...singleRoom
+    //         })
+    //     })
+    //     .then(res => res.json())
+    //     .then(data => {
+    //         console.log(data);
+    //         setbooked(true)
+    //     })
+    // }
 
     if (booked) {
         return <Navigate to="/rooms" />
@@ -85,18 +86,9 @@ export default function Order(){
             </div>
 
             <div className="payment-info">
-            <form onSubmit={handleOrder}
-                className="form-box"
-                enctype="text/plain"
-                method="get"
-                target="_blank"
-            >
-                
-                <button type="submit" className="btn">
-                <i className="fa-solid fa-lock"></i> Book
+                <button onClick={() => alert("Opps! sorry something went wrong. Please try again later")} className="exploreBtn text-center">
+                <i className="fa-solid fa-lock"></i> <b>Book</b>
                 </button>
-            </form>
-
             </div>
         </div>
         </div>
