@@ -13,16 +13,20 @@ function App() {
     const user_id = sessionStorage.getItem('user_id');
     dispatch(fetchLoggedInUser(user_id));
     setTimeout(() => {
-      setloadingMessage("Wait. We are building amazing hotels hotels...")
-    }, 4000);
+      setloadingMessage("Building for you amazing hotels ...")
+    }, 6000);
 
     setTimeout(() => {
       setloadingMessage("Applying cuteness to the rooms...")
-    }, 8000);
+    }, 12000);
+
+    setTimeout(() => {
+      setloadingMessage("Cleaning up the room ...")
+    }, 15000);
 
     setTimeout(() => {
       setloadingMessage("Almost there ...")
-    }, 12000);
+    }, 20000);
   }, [])
 
   return (
