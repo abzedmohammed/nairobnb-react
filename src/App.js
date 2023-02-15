@@ -21,12 +21,12 @@ function App() {
     }, 12000);
 
     setTimeout(() => {
-      setloadingMessage("Cleaning up the room ...")
-    }, 15000);
+      setloadingMessage("Cleaning up rooms...")
+    }, 18000);
 
     setTimeout(() => {
       setloadingMessage("Almost there ...")
-    }, 20000);
+    }, 24000);
   }, [])
 
   return (
