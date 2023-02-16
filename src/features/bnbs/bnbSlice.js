@@ -10,17 +10,17 @@ const initialState = {
 }
 
 export const fetchBnbs = createAsyncThunk('bnbs/fetchBnbs', () => {
-    return axios.get("https://nairobnb-api.onrender.com/bnb_rooms")
+    return axios.get("http://35.196.117.225:3000/bnb_rooms")
     .then(res => res.data)
 })
 
 export const addBnb = createAsyncThunk('bnbs/addBnb', (data) => {
-    return axios.post("https://nairobnb-api.onrender.com/bnb_rooms", data)
+    return axios.post("http://35.196.117.225:3000/bnb_rooms", data)
     .then(res => res.data)
 })
 
 export const fetchBnbById = createAsyncThunk('bnbs/fetchBnbById', id => {
-    return axios.get(`https://nairobnb-api.onrender.com/bnb_rooms/${id}`)
+    return axios.get(`http://35.196.117.225:3000/bnb_rooms/${id}`)
     .then(res => res.data)
 })
 

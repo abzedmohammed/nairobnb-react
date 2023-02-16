@@ -61,7 +61,7 @@ This application has been built with.
 
 * [![Bootstrap][Bootstrap.com]][Bootstrap-url]
 * [![Rails][Rails.com]][Rails-url]
-* [![React][React.js]][Rails-url]
+* [![React][React.js]][React-url]
 * [![Cloudinary][Cloudinary.com]][Cloudinary-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
